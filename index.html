@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acoustic Data Link · SW-41</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div>
+    <div class="eyebrow">CyberNomads · SW-41 · Software track</div>
+    <h1>Acoustic Data Link</h1>
+    <p class="sub">Sound-based data transfer. No Wi-Fi. No Bluetooth. Just sound.</p>
+  </div>
+  <div class="pill" id="status"><span class="dot"></span><span id="statusText">Idle</span></div>
+</header>
+
+<main>
+  <section class="card" id="txcard">
+    <h2>Transmit</h2>
+    <label for="msg">Message</label>
+    <textarea id="msg" rows="3" maxlength="120">Hello, Bits2Wave!</textarea>
+    <div class="row">
+      <div>
+        <label for="mode">Mode</label>
+        <select id="mode"></select>
+      </div>
+      <div>
+        <label for="vol">Volume <output id="volOut">60%</output></label>
+        <input type="range" id="vol" min="10" max="100" value="60">
+      </div>
+    </div>
+    <div class="hint" id="eta"></div>
+    <div class="btns">
+      <button id="btnTx" class="primary">▶ Transmit</button>
+      <button id="btnListen">🎙 Listen</button>
+      <button id="btnSim">⚙ Simulate</button>
+    </div>
+    <details>
+      <summary>Channel &amp; receiver settings</summary>
+      <div class="row">
+        <div>
+          <label for="snr">Simulated SNR <output id="snrOut">10 dB</output></label>
+          <input type="range" id="snr" min="-6" max="30" value="10">
+        </div>
+        <div>
+          <label for="boost">Mic boost <output id="boostOut">×1</output></label>
+          <input type="range" id="boost" min="1" max="30" value="1">
+        </div>
+      </div>
+      <div class="btns small">
+        <button id="btnWav">⬇ Save last TX as .wav</button>
+      </div>
+      <p class="hint">Browser audio processing (echo cancel, noise suppression, auto-gain) is switched <b>off</b> for the mic, otherwise it destroys sustained tones.</p>
+    </details>
+  </section>
+
+  <section class="card" id="rxcard">
+    <h2>Receive</h2>
+    <div class="stats">
+      <div class="stat"><span>Raw bit rate</span><b id="sRate">–</b></div>
+      <div class="stat"><span>Throughput</span><b id="sThru">–</b></div>
+      <div class="stat"><span>Bits sent</span><b id="sBits">–</b></div>
+      <div class="stat"><span>CRC-16</span><b id="sCrc">–</b></div>
+      <div class="stat"><span>FEC fixes</span><b id="sFec">–</b></div>
+      <div class="stat"><span>Signal quality</span><b id="sQual">–</b></div>
+    </div>
+    <label>Received message</label>
+    <div id="rxMsg" class="rxmsg empty">Nothing received yet. Press <b>Listen</b> on the receiving device.</div>
+    <div class="bar"><i id="prog"></i></div>
+    <div class="meter"><span>Mic level</span><div class="bar thin"><i id="level"></i></div></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Live spectrum <small>0 – 4 kHz</small></h2>
+    <canvas id="spec" height="150"></canvas>
+    <canvas id="fall" height="110"></canvas>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Bitstreams <small>each cell is one symbol</small></h2>
+    <label>TX symbols</label>
+    <div id="txBits" class="cells"></div>
+    <label>RX symbols <span id="ber"></span></label>
+    <div id="rxBits" class="cells"></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Log</h2>
+    <pre id="log"></pre>
+  </section>
+</main>
+
+<footer>Tip: for over-the-air tests open this page on two devices (HTTPS or localhost is required for the microphone). Press Listen on one, Transmit on the other.</footer>
+
+<script src="modem.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
